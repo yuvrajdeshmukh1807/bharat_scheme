@@ -2,26 +2,26 @@ from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 
 class EligibilityProfile(BaseModel):
-    state: str = Field(..., example="Maharashtra")
-    district: Optional[str] = Field(None, example="Pune")
-    age: int = Field(..., ge=0, le=120, example=24)
-    gender: str = Field("all", example="female") # female, male, other, all
-    caste_category: str = Field("General", example="OBC") # General, OBC, SC, ST, EWS
-    occupation: str = Field("student", example="farmer") # farmer, student, artisan, street_vendor, unemployed, salaried, self_employed, homemaker, other
-    student_status: bool = Field(False, example=True)
-    education_level: Optional[str] = Field(None, example="undergraduate") # 10th, 12th, undergraduate, postgraduate, vocational, none
-    annual_income: float = Field(..., ge=0, example=180000) # In INR per year
-    is_farmer: bool = Field(False, example=False)
-    has_landholding: bool = Field(False, example=False)
-    is_entrepreneur: bool = Field(False, example=False)
-    is_differently_abled: bool = Field(False, example=False)
-    is_bpl_ration_card_holder: bool = Field(False, example=False)
-    is_minority: bool = Field(False, example=False)
-    language: str = Field("en", example="en") # en, hi, mr
+    state: str = Field(..., json_schema_extra={"example": "Maharashtra"})
+    district: Optional[str] = Field(None, json_schema_extra={"example": "Pune"})
+    age: int = Field(..., ge=0, le=120, json_schema_extra={"example": 24})
+    gender: str = Field("all", json_schema_extra={"example": "female"})  # female, male, other, all
+    caste_category: str = Field("General", json_schema_extra={"example": "OBC"})  # General, OBC, SC, ST, EWS
+    occupation: str = Field("student", json_schema_extra={"example": "farmer"})  # farmer, student, artisan, street_vendor, unemployed, salaried, self_employed, homemaker, other
+    student_status: bool = Field(False, json_schema_extra={"example": True})
+    education_level: Optional[str] = Field(None, json_schema_extra={"example": "undergraduate"})  # 10th, 12th, undergraduate, postgraduate, vocational, none
+    annual_income: float = Field(..., ge=0, json_schema_extra={"example": 180000})  # In INR per year
+    is_farmer: bool = Field(False, json_schema_extra={"example": False})
+    has_landholding: bool = Field(False, json_schema_extra={"example": False})
+    is_entrepreneur: bool = Field(False, json_schema_extra={"example": False})
+    is_differently_abled: bool = Field(False, json_schema_extra={"example": False})
+    is_bpl_ration_card_holder: bool = Field(False, json_schema_extra={"example": False})
+    is_minority: bool = Field(False, json_schema_extra={"example": False})
+    language: str = Field("en", json_schema_extra={"example": "en"})  # en, hi, mr
 
 class CriteriaEvaluation(BaseModel):
     criteria_name: str
-    status: str # "matched", "unmet", "neutral", "needs_verification"
+    status: str  # "matched", "unmet", "neutral", "needs_verification"
     message: str
 
 class SchemeMatchResult(BaseModel):
@@ -34,8 +34,8 @@ class SchemeMatchResult(BaseModel):
     ministry: str
     brief: str
     benefits: List[str]
-    match_status: str # "ELIGIBLE", "POTENTIALLY_ELIGIBLE", "NOT_ELIGIBLE"
-    match_score: int # 0 to 100
+    match_status: str  # "ELIGIBLE", "POTENTIALLY_ELIGIBLE", "NOT_ELIGIBLE"
+    match_score: int  # 0 to 100
     matched_reasons: List[str]
     unmet_reasons: List[str]
     info_needed: List[str]
@@ -82,10 +82,10 @@ class SchemeResponse(BaseModel):
     tags: List[str]
 
 class ChatQuery(BaseModel):
-    query: str = Field(..., min_length=2, example="What are the scholarship schemes for undergraduate girl students?")
-    language: str = Field("en", example="en") # en, hi, mr
+    query: str = Field(..., min_length=2, json_schema_extra={"example": "What are the scholarship schemes for undergraduate girl students?"})
+    language: str = Field("en", json_schema_extra={"example": "en"})  # en, hi, mr
     api_key: Optional[str] = None
-    llm_provider: Optional[str] = "gemini" # gemini or openai or offline
+    llm_provider: Optional[str] = "gemini"  # gemini or openai or offline
     user_context: Optional[Dict[str, Any]] = None
 
 class Citation(BaseModel):

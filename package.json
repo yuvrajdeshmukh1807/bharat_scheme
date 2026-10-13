@@ -1,0 +1,11 @@
+{
+  "name": "bharatscheme-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BharatScheme AI - AI-Powered Government Scheme Finder",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "preview": "npm --prefix frontend run preview"
+  }
+}

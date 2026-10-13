@@ -1,7 +1,8 @@
 # backend/main.py
 import json
+from contextlib import asynccontextmanager
 from typing import List, Optional
-from fastapi import FastAPI, Depends, HTTPException, Query, status
+from fastapi import FastAPI, Depends, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 
@@ -19,23 +20,8 @@ from rag_service import rag_service
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-app = FastAPI(
-    title="BharatScheme AI Backend API",
-    description="Multilingual AI-powered Indian Government Scheme Discovery & Eligibility Engine",
-    version="1.0.0"
-)
-
-# Enable CORS for local dev and preview
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.on_event("startup")
-def seed_database():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     """Seed verified schemes into the database on startup if not already seeded."""
     db = next(get_db())
     try:
@@ -76,6 +62,25 @@ def seed_database():
             db.commit()
     finally:
         db.close()
+    yield  # application runs here
+
+app = FastAPI(
+    title="BharatScheme AI Backend API",
+    description="Multilingual AI-powered Indian Government Scheme Discovery & Eligibility Engine",
+    version="1.0.0",
+    lifespan=lifespan
+)
+
+# Enable CORS for local dev and preview
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 
 @app.get("/api/health")
 def health_check():

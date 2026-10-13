@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, String, Text, Integer, DateTime
+from sqlalchemy import Column, String, Text, Integer, DateTime, UniqueConstraint
 from database import Base
 
 class Scheme(Base):
@@ -49,6 +49,10 @@ class SavedScheme(Base):
     scheme_id = Column(String(100), index=True, nullable=False)
     notes = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    __table_args__ = (
+        UniqueConstraint('user_identifier', 'scheme_id', name='uq_user_scheme'),
+    )
 
 class QueryLog(Base):
     __tablename__ = "query_logs"

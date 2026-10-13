@@ -8,11 +8,12 @@ node_modules/
 # Build artifacts
 dist/
 **/dist/
+frontend/dist/
 build/
 .oxlintrc.json
 tsconfig.app.tsbuildinfo
 
-# Python cache & testing
+# Python cache, linting & testing
 __pycache__/
 **/__pycache__/
 *.pyc
@@ -20,6 +21,8 @@ __pycache__/
 *.pyd
 .pytest_cache/
 **/pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .coverage
 htmlcov/
 
@@ -29,6 +32,7 @@ htmlcov/
 *.sqlite3
 bharatscheme.db
 **/bharatscheme.db
+backend/bharatscheme.db
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -38,9 +42,15 @@ yarn-error.log*
 .env
 .env.local
 .env.*.local
+*.key
+*.pem
+*.secret
 
 # IDE & OS
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+*.tmp
+*.bak
+scratch/

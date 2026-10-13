@@ -79,6 +79,14 @@ class SchemeRAGService:
                 
         return retrieved_results
 
+    @staticmethod
+    def _sanitize_query(query: str) -> str:
+        """Sanitize query against excessive length and malformed input."""
+        if not query:
+            return ""
+        cleaned = " ".join(query.strip().split())
+        return cleaned[:500]
+
     async def answer_query(
         self,
         query: str,
@@ -88,6 +96,7 @@ class SchemeRAGService:
         user_context: Optional[Dict[str, Any]] = None
     ) -> ChatResponse:
         """Execute RAG pipeline: Retrieve relevant scheme context, then generate grounded response."""
+        query = self._sanitize_query(query)
         retrieved = self.retrieve(query, top_k=4)
         
         citations: List[Citation] = []
